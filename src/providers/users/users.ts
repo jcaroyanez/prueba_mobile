@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { URL } from '../util';
 /*
   Generated class for the UsersProvider provider.
 
@@ -12,6 +12,12 @@ export class UsersProvider {
 
   constructor(public http: HttpClient) {
     console.log('Hello UsersProvider Provider');
+  }
+
+  login(user:any){
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+     const body = JSON.stringify(user);
+     return this.http.post(URL,body,{headers:headers});
   }
 
 }

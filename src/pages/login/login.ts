@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { UsersProvider } from '../../providers/users/users';
+import { LoadingController } from 'ionic-angular';
 /**
  * Generated class for the LoginPage page.
  *
@@ -35,7 +36,8 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder, private _usersProvider:UsersProvider,
+    private _loadingCtrl:LoadingController) {
 
     ////enlazando los campos que va tener mi formulario y que parametros de validación
     this.formLogin = this._formBuilder.group({
@@ -50,14 +52,31 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+
   }
 
   onSubmit(){
-    const users = {
+    //// creando el loader
+    let loader = this._loadingCtrl.create({
+         content:'Cargando'
+        });
+    loader.present();
+
+    /////creando un json con los datos del formaulario para enviar al servicio
+    const user = {
       'email':this.formLogin.get('email').value,
       'password':this.formLogin.get('password').value
     }
-    console.log(users);
+    ///// enviando json al servicio  y suscribiendo a la respuesta de la peticion
+    this._usersProvider.login(user).subscribe(rest => {
+        
+    },error => {
+      ////si ocurre un error en al peticion
+      loader.dismiss();
+      alert(error.error.error);
+    },() => {
+      loader.dismiss();
+    });
   }
 
   ///metodo encargado de cargar los mensajes dependiendo del validators no cumplido
