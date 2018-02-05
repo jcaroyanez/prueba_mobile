@@ -10,6 +10,7 @@ import { MyApp } from './app.component';
 import { UsersProvider } from '../providers/users/users';
 import { StoreProvider } from '../providers/store/store';
 import { IonicStorageModule } from '@ionic/storage';
+import { Push } from '@ionic-native/push';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { IonicStorageModule } from '@ionic/storage';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UsersProvider,
-    StoreProvider
+    StoreProvider,
+    Push
   ]
 })
 export class AppModule {}
