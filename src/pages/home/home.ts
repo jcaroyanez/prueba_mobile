@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { StoreProvider } from '../../providers/store/store';
 /**
  * Generated class for the HomePage page.
  *
@@ -14,12 +14,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'home.html',
 })
 export class HomePage {
+   data:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+  public _storeProvider:StoreProvider) {  }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+    /// obtener los datos del usuario del storage
+    this._storeProvider.getDato().then((rest:any) => {
+      this.data  = rest;
+    })
+  }
+
+  logout(){
+   /// remover los datos del usuario del storage
+   this._storeProvider.remove();
+   this.navCtrl.setRoot('LoginPage');
   }
 
 }

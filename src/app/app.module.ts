@@ -7,31 +7,35 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule  } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { UsersProvider } from '../providers/users/users';
+import { StoreProvider } from '../providers/store/store';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicStorageModule.forRoot({
+      name: 'prueba-mobile',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UsersProvider
+    UsersProvider,
+    StoreProvider
   ]
 })
 export class AppModule {}

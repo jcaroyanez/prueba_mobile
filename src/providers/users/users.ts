@@ -10,14 +10,15 @@ import { URL } from '../util';
 @Injectable()
 export class UsersProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello UsersProvider Provider');
-  }
+  constructor(public http: HttpClient) {}
 
   login(user:any){
+    /// creando la cabezera de la peticion post 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-     const body = JSON.stringify(user);
-     return this.http.post(URL,body,{headers:headers});
+    ///// convirtiendo los datos entrantes en un json 
+    const body = JSON.stringify(user);
+    //// retornando los valores de la peticion post
+    return this.http.post(URL,body,{headers:headers});
   }
 
 }

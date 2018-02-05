@@ -3,6 +3,7 @@ import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UsersProvider } from '../../providers/users/users';
 import { LoadingController } from 'ionic-angular';
+import { StoreProvider } from '../../providers/store/store';
 /**
  * Generated class for the LoginPage page.
  *
@@ -37,7 +38,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private _formBuilder: FormBuilder, private _usersProvider:UsersProvider,
-    private _loadingCtrl:LoadingController) {
+    private _loadingCtrl:LoadingController, private _storeProvider:StoreProvider ) {
 
     ////enlazando los campos que va tener mi formulario y que parametros de validación
     this.formLogin = this._formBuilder.group({
@@ -55,6 +56,17 @@ export class LoginPage {
 
   }
 
+  ionViewWillEnter(){
+    this._storeProvider.getDato().then(data =>{
+      console.log('dato',data);
+      //// validar si exite una session del usuario lo direcionamos al home
+      if(data){
+        this.navCtrl.setRoot('HomePage');
+      }
+    })
+  }
+
+
   onSubmit(){
     //// creando el loader
     let loader = this._loadingCtrl.create({
@@ -62,18 +74,21 @@ export class LoginPage {
         });
     loader.present();
 
-    /////creando un json con los datos del formaulario para enviar al servicio
+    /////creando una constante con los datos del formaulario para enviar al servicio
     const user = {
       'email':this.formLogin.get('email').value,
       'password':this.formLogin.get('password').value
     }
     ///// enviando json al servicio  y suscribiendo a la respuesta de la peticion
     this._usersProvider.login(user).subscribe(rest => {
-        
+       console.log(rest);
+       this._storeProvider.setDato(rest);
+       this.navCtrl.setRoot('HomePage');
     },error => {
       ////si ocurre un error en al peticion
       loader.dismiss();
-      alert(error.error.error);
+      console.log('error',error);
+      alert("Error"+JSON.stringify(error));
     },() => {
       loader.dismiss();
     });
