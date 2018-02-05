@@ -110,4 +110,8 @@ export class LoginPage {
      }
    }
 
+   signup(){
+     this.navCtrl.push('RegisterPage');
+   }
+
 }

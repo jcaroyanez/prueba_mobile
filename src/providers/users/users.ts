@@ -18,7 +18,16 @@ export class UsersProvider {
     ///// convirtiendo los datos entrantes en un json 
     const body = JSON.stringify(user);
     //// retornando los valores de la peticion post
-    return this.http.post(URL,body,{headers:headers});
+    return this.http.post(URL+"/login",body,{headers:headers});
+  }
+
+  register(user:any){
+    /// creando la cabezera de la peticion post 
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    ///// convirtiendo los datos entrantes en un json 
+    const body = JSON.stringify(user);
+    //// retornando los valores de la peticion post
+    return this.http.post(URL+"/register",body,{headers:headers});
   }
 
 }
